@@ -1,7 +1,11 @@
-import {FilterValuesType, TodolistType} from '../app/App';
 import {v1} from 'uuid';
 
-
+export type TodolistType = {
+    id: string
+    title: string
+    filter: FilterValuesType
+}
+export type FilterValuesType = 'all' | 'active' | 'completed'
 const initialState: TodolistType[] = [];
 
 export const todolistsReducer = (state: TodolistType[] = initialState, action: ActionsType): TodolistType[] => {
