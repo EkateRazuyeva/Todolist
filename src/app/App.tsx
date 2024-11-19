@@ -1,27 +1,23 @@
-import './App.css';
+import CssBaseline from "@mui/material/CssBaseline";
 import {ThemeProvider} from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { useSelector} from 'react-redux';
-import {RootState} from './store';
-import {getTheme} from '../common/theme/theme';
-import {Header} from '../Header';
-import {Main} from '../Main';
+import React from "react";
+import {Header} from "../common/components/Header/Header";
+import {useAppSelector} from "../common/hooks/useAppSelector";
+import {getTheme} from "../common/theme/theme";
+import {selectThemeMode} from "./appSelectors";
+import {Main} from "./Main";
 
+export const App = () => {
 
-export type ThemeMode = 'dark' | 'light'
+	const themeMode = useAppSelector(selectThemeMode)
 
-function App() {
-
-    const themeMode = useSelector<RootState, ThemeMode>(state => state.app.themeMode)
-
-
-    return (
-        <ThemeProvider theme={getTheme(themeMode)}>
-            <CssBaseline/>
-            <Header/>
-            <Main/>
-        </ThemeProvider>
-    )
+	return (
+		<ThemeProvider theme={getTheme(themeMode)}>
+			<CssBaseline/>
+			<Header/>
+			<Main/>
+		</ThemeProvider>
+	);
 }
 
-export default App;
+
