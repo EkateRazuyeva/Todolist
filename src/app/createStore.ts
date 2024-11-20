@@ -1,3 +1,3 @@
 export var ActionTypes = {
-    INIT: '@@redux/INIT',
-};
+  INIT: "@@redux/INIT",
+}
