@@ -1,5 +1,10 @@
-import { FieldError } from "../../../common/types/types"
-import { TaskPriority, TaskStatus } from "common/enum/enum"
+import { TaskPriority, TaskStatus } from "common/enums"
+
+export type GetTasksResponse = {
+  error: string | null
+  totalCount: number
+  items: DomainTask[]
+}
 
 export type DomainTask = {
   description: string
@@ -13,37 +18,20 @@ export type DomainTask = {
   order: number
   addedDate: string
 }
-
-export type GetTasksResponse = {
-  error: string | null
-  items: DomainTask[]
-  totalCount: number
-}
-
-export type CreateTaskResponse = {
-  data: { item: DomainTask }
-  fieldsErrors: FieldError[]
-  messages: string[]
-  resultCode: number
+export type UpdateTaskDomainModel = {
+  title?: string
+  description?: string
+  status?: TaskStatus
+  priority?: TaskPriority
+  startDate?: string
+  deadline?: string
 }
 
 export type UpdateTaskModel = {
-  description: string
   title: string
+  description: string
   status: TaskStatus
   priority: TaskPriority
   startDate: string
   deadline: string
-}
-
-export type UpdateTaskResponse = {
-  data: { item: UpdateTaskModel }
-  resultCode: number
-  messages: string[]
-}
-
-export type DeleteTaskResponse = {
-  resultCode: number
-  messages: string[]
-  data: {}
 }

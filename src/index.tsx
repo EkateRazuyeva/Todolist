@@ -4,13 +4,11 @@ import "./index.css"
 import { Provider } from "react-redux"
 import { App } from "./app/App"
 import { store } from "./app/store"
-import { AppHttpRequests } from "./app/AppHttpRequests"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <Provider store={store}>
-    {/*<App/>*/}
-    <AppHttpRequests />
+    <App />
   </Provider>,
 )
 
