@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/EkateRazuyeva/todoList.git/static/css/main.741608aa.css",
+    "main.js": "/EkateRazuyeva/todoList.git/static/js/main.6cdeab4f.js",
+    "index.html": "/EkateRazuyeva/todoList.git/index.html",
+    "main.741608aa.css.map": "/EkateRazuyeva/todoList.git/static/css/main.741608aa.css.map",
+    "main.6cdeab4f.js.map": "/EkateRazuyeva/todoList.git/static/js/main.6cdeab4f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.741608aa.css",
+    "static/js/main.6cdeab4f.js"
+  ]
+}
