@@ -1,5 +1,6 @@
 {
   "name": "1-lesson",
+  "homepage": "https://github.com/EkateRazuyeva/todoList.git",
   "jest": {
     "moduleNameMapper": {
       "axios": "axios/dist/node/axios.cjs"
@@ -37,7 +38,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -58,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^6.2.0",
     "prettier": "3.3.3"
   }
 }
