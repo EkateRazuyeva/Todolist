@@ -1,6 +1,5 @@
 {
   "name": "1-lesson",
-  "homepage": "https://github.com/EkateRazuyeva/todoList.git",
   "jest": {
     "moduleNameMapper": {
       "axios": "axios/dist/node/axios.cjs"
