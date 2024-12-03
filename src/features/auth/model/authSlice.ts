@@ -1,11 +1,12 @@
-import { setAppStatus } from "../../../app/app-reducer"
-import { LoginArgs } from "../api/authApi.types"
-import { Dispatch } from "redux"
-import { authApi } from "../api/authApi"
-import { ResultCode } from "common/enums"
-import { handleServerAppError } from "common/utils/handleServerAppError"
-import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
 import { createSlice } from "@reduxjs/toolkit"
+import { ResultCode } from "common/enums"
+import { handleServerAppError, handleServerNetworkError } from "common/utils"
+import { Dispatch } from "redux"
+import { setAppStatus } from "../../../app/appSlice"
+import { clearTasks } from "../../todolists/model/tasksSlice"
+import { clearTodolists } from "../../todolists/model/todolistsSlice"
+import { authApi } from "../api/authAPI"
+import { LoginArgs } from "../api/authAPI.types"
 
 export const authSlice = createSlice({
   name: "auth",
@@ -13,7 +14,6 @@ export const authSlice = createSlice({
     isLoggedIn: false,
     isInitialized: false,
   },
-
   reducers: (create) => ({
     setIsLoggedIn: create.reducer<{ isLoggedIn: boolean }>((state, action) => {
       state.isLoggedIn = action.payload.isLoggedIn
@@ -22,15 +22,12 @@ export const authSlice = createSlice({
       state.isInitialized = action.payload.isInitialized
     }),
   }),
+  selectors: {
+    selectIsLoggedIn: (state) => state.isLoggedIn,
+    selectIsInitialized: (state) => state.isInitialized,
+  },
 })
 
-// Action creators
-
-export const { setIsLoggedIn, setIsInitialized } = authSlice.actions
-
-export const authReducer = authSlice.reducer
-
-// thunks
 export const loginTC = (data: LoginArgs) => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
   authApi
@@ -48,6 +45,7 @@ export const loginTC = (data: LoginArgs) => (dispatch: Dispatch) => {
       handleServerNetworkError(error, dispatch)
     })
 }
+
 export const logoutTC = () => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
   authApi
@@ -56,6 +54,8 @@ export const logoutTC = () => (dispatch: Dispatch) => {
       if (res.data.resultCode === ResultCode.Success) {
         dispatch(setAppStatus({ status: "succeeded" }))
         dispatch(setIsLoggedIn({ isLoggedIn: false }))
+        dispatch(clearTasks())
+        dispatch(clearTodolists())
         localStorage.removeItem("sn-token")
       } else {
         handleServerAppError(res.data, dispatch)
@@ -85,3 +85,7 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
       dispatch(setIsInitialized({ isInitialized: true }))
     })
 }
+
+export const { setIsLoggedIn, setIsInitialized } = authSlice.actions
+export const { selectIsLoggedIn, selectIsInitialized } = authSlice.selectors
+export const authReducer = authSlice.reducer

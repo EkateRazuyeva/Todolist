@@ -8,12 +8,11 @@ import Grid from "@mui/material/Grid"
 import TextField from "@mui/material/TextField"
 import { useAppDispatch, useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
-import { selectThemeMode } from "../../../../app/appSelectors"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
-import s from "./Login.module.css"
-import { loginTC } from "../../model/auth-reducer"
-import { selectIsLoggedIn } from "../../model/authSelectors"
 import { Navigate } from "react-router-dom"
+import { selectThemeMode } from "../../../../app/appSlice"
+import { loginTC, selectIsLoggedIn } from "../../model/authSlice"
+import s from "./Login.module.css"
 
 type Inputs = {
   email: string
@@ -25,6 +24,7 @@ export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const theme = getTheme(themeMode)
+
   const dispatch = useAppDispatch()
 
   const {
@@ -39,8 +39,9 @@ export const Login = () => {
     dispatch(loginTC(data))
     reset()
   }
+
   if (isLoggedIn) {
-    return <Navigate to="/" />
+    return <Navigate to={"/"} />
   }
 
   return (
@@ -81,7 +82,20 @@ export const Login = () => {
                 })}
               />
               {errors.email && <span className={s.errorMessage}>{errors.email.message}</span>}
-              <TextField type="password" label="Password" margin="normal" {...register("password")} />
+              <TextField
+                type="password"
+                label="Password"
+                margin="normal"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 3,
+                    message: "Password must be at least 3 characters long",
+                  },
+                })}
+              />
+              {errors.password && <span className={s.errorMessage}>{errors.password.message}</span>}
+
               <FormControlLabel
                 label={"Remember me"}
                 control={
