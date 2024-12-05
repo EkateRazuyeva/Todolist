@@ -3,7 +3,7 @@ import { ThemeProvider } from "@mui/material/styles"
 import { ErrorSnackbar, Header } from "common/components"
 import { useAppDispatch, useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Outlet } from "react-router-dom"
 import { initializeAppTC, selectIsInitialized } from "../features/auth/model/authSlice"
 import CircularProgress from "@mui/material/CircularProgress"
@@ -12,8 +12,7 @@ import { selectThemeMode } from "./appSlice"
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)
-  const isInitialized = useAppSelector(selectIsInitialized)
-
+  const [isInitialized, setIsInitialized] = useState(false)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
