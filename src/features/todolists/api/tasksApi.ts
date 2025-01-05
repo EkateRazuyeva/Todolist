@@ -3,11 +3,22 @@ import { BaseResponse } from "common/types"
 import { baseApi } from "../../../app/baseApi"
 import { DomainTask, GetTasksResponse, UpdateTaskModel } from "./tasksApi.types"
 
+export const PAGE_SIZE = 4
+
 export const tasksApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getTasks: build.query<GetTasksResponse, string>({
-      query: (todolistId) => `todo-lists/${todolistId}/tasks`,
-      providesTags: ["Task"],
+    getTasks: build.query<GetTasksResponse, { todolistId: string; args: { page: number } }>({
+      query: ({ todolistId, args }) => {
+        const params = { ...args, count: PAGE_SIZE }
+        return {
+          url: `todo-lists/${todolistId}/tasks`,
+          params,
+        }
+      },
+      providesTags: (res, err, { todolistId }) =>
+        res
+          ? [...res.items.map(({ id }) => ({ type: "Task", id }) as const), { type: "Task", id: todolistId }]
+          : ["Task"],
     }),
     addTask: build.mutation<BaseResponse<{ item: DomainTask }>, { todolistId: string; title: string }>({
       query: ({ todolistId, title }) => {
@@ -19,7 +30,7 @@ export const tasksApi = baseApi.injectEndpoints({
           },
         }
       },
-      invalidatesTags: ["Task"],
+      invalidatesTags: (res, err, { todolistId }) => [{ type: "Task", id: todolistId }],
     }),
     removeTask: build.mutation<BaseResponse, { todolistId: string; taskId: string }>({
       query: ({ todolistId, taskId }) => {
@@ -28,7 +39,7 @@ export const tasksApi = baseApi.injectEndpoints({
           url: `todo-lists/${todolistId}/tasks/${taskId}`,
         }
       },
-      invalidatesTags: ["Task"],
+      invalidatesTags: (res, err, { taskId }) => [{ type: "Task", id: taskId }],
     }),
     updateTask: build.mutation<
       BaseResponse<{ item: DomainTask }>,
@@ -41,7 +52,7 @@ export const tasksApi = baseApi.injectEndpoints({
           body: model,
         }
       },
-      invalidatesTags: ["Task"],
+      invalidatesTags: (res, err, { taskId }) => [{ type: "Task", id: taskId }],
     }),
   }),
 })
